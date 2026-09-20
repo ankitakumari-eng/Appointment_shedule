@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Login - CareDirect</title>
+
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #eff6ff;
+
+            --background-color: #f8fafc;
+            --surface-color: #ffffff;
+
+            --text-color: #1e293b;
+            --text-heading: #0f172a;
+            --muted-color: #64748b;
+
+            --border-color: #e2e8f0;
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-xl: 24px;
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 50px rgba(15, 23, 42, 0.12);
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: var(--background-color);
+            color: var(--text-color);
+        }
+
+
+        /* APP */
+
+        .app-container {
+            min-height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        /* HEADER */
+
+        .app-header {
+            width: 100%;
+            min-height: 70px;
+
+            background-color: var(--surface-color);
+
+            border-bottom: 1px solid var(--border-color);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 12px 5%;
+
+            box-shadow: var(--shadow-sm);
+        }
+
+
+        .header-left {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        .top-text {
+            width: 38px;
+            height: 38px;
+
+            background-color: var(--primary-color);
+
+            color: white;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+
+        .brand-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+
+            color: var(--primary-color);
+        }
+
+
+        .brand-text .Ankita {
+            color: #1e3a8a;
+        }
+
+
+        /* BACK BUTTON */
+
+        .back-btn {
+            background: var(--primary-light);
+
+            color: var(--primary-color);
+
+            border: 1px solid #bfdbfe;
+
+            padding: 10px 16px;
+
+            border-radius: var(--radius-sm);
+
+            font-size: 0.9rem;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+
+        /* MAIN */
+
+        .main-content {
+            flex: 1;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px 20px;
+        }
+
+
+        /* CARD */
+
+        .login-card {
+            width: 100%;
+            max-width: 500px;
+
+            background: white;
+
+            border: 1px solid var(--border-color);
+
+            border-radius: var(--radius-xl);
+
+            padding: 42px 40px;
+
+            text-align: center;
+
+            box-shadow: var(--shadow-lg);
+        }
+
+
+        .card-icon {
+            width: 68px;
+            height: 68px;
+
+            margin: 0 auto 20px;
+
+            background: var(--primary-light);
+
+            color: var(--primary-color);
+
+            border-radius: 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+
+        .login-card h1 {
+            margin: 0 0 10px;
+
+            color: var(--text-heading);
+
+            font-size: 2rem;
+        }
+
+
+        .subtitle {
+            margin: 0 0 28px;
+
+            color: var(--muted-color);
+
+            font-size: 0.95rem;
+        }
+
+
+        /* FORM */
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+
+            gap: 18px;
+
+            text-align: left;
+        }
+
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+
+            color: var(--text-color);
+        }
+
+
+        .form-group input {
+            width: 100%;
+
+            padding: 14px 15px;
+
+            border: 1px solid var(--border-color);
+
+            border-radius: var(--radius-sm);
+
+            font-size: 0.95rem;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+
+            box-shadow:
+                0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+
+        /* LOGIN BUTTON */
+
+        .login-btn {
+            width: 100%;
+
+            margin-top: 5px;
+
+            padding: 15px 20px;
+
+            border: none;
+
+            border-radius: var(--radius-md);
+
+            background: var(--primary-color);
+
+            color: white;
+
+            font-size: 1rem;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+            box-shadow:
+                0 8px 18px rgba(37, 99, 235, 0.22);
+        }
+
+
+        .login-btn:hover {
+            background: var(--primary-dark);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* MESSAGE */
+
+        .message {
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 12px;
+
+            border-radius: var(--radius-sm);
+
+            text-align: center;
+
+            font-size: 0.9rem;
+        }
+
+
+        .success-message {
+            display: block;
+
+            background: #dcfce7;
+
+            color: #15803d;
+
+            border: 1px solid #bbf7d0;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media screen and (max-width: 600px) {
+
+            .app-header {
+                padding: 12px 16px;
+            }
+
+
+            .brand-text {
+                font-size: 1.1rem;
+            }
+
+
+            .login-card {
+                padding: 35px 22px;
+            }
+
+
+            .login-card h1 {
+                font-size: 1.7rem;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="app-container">
+
+
+        <!-- HEADER -->
+
+        <header class="app-header">
+
+            <div class="header-left">
+
+                <div class="top-text">
+                    ✚
+                </div>
+
+
+                <div class="brand-text">
+                    <span class="Ankita">Care</span><span>Direct</span>
+                </div>
+
+            </div>
+
+
+            <button type="button" class="back-btn" id="backBtn">
+
+                ← Back
+
+            </button>
+
+        </header>
+
+
+        <!-- MAIN -->
+
+        <main class="main-content">
+
+
+            <section class="login-card">
+
+
+                <div class="card-icon">
+                    ♟
+                </div>
+
+
+                <h1>
+                    Login as a Patient
+                </h1>
+
+
+                <p class="subtitle">
+                    Enter your email and password to continue.
+                </p>
+
+
+                <!-- LOGIN FORM -->
+
+                <form class="login-form" id="patientLoginForm">
+
+
+                    <div class="form-group">
+
+                        <label for="patientEmail">
+                            Email Address
+                        </label>
+
+                        <input type="email" id="patientEmail" placeholder="Enter your email" required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="patientPassword">
+                            Password
+                        </label>
+
+                        <input type="password" id="patientPassword" placeholder="Enter your password" minlength="4"
+                            required>
+
+                    </div>
+
+
+                    <button type="submit" class="login-btn">
+
+                        ♟ Login as Patient
+
+                    </button>
+
+
+                </form>
+
+
+                <!-- SUCCESS MESSAGE -->
+
+                <div class="message" id="loginMessage">
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        const patientLoginForm =
+            document.getElementById("patientLoginForm");
+
+
+        const patientEmail =
+            document.getElementById("patientEmail");
+
+
+        const patientPassword =
+            document.getElementById("patientPassword");
+
+
+        const loginMessage =
+            document.getElementById("loginMessage");
+
+
+        const backBtn =
+            document.getElementById("backBtn");
+
+
+        /* BACK BUTTON */
+
+        backBtn.addEventListener(
+            "click",
+
+            function () {
+
+                window.location.href =
+                    "button.html";
+
+            }
+
+        );
+
+
+        /* PATIENT LOGIN */
+
+        patientLoginForm.addEventListener(
+            "submit",
+
+            function (event) {
+
+                event.preventDefault();
+
+
+                const email =
+                    patientEmail.value.trim();
+
+
+                const password =
+                    patientPassword.value;
+
+
+                /*
+                PATIENT CAN USE ANY EMAIL
+                AND ANY PASSWORD
+                */
+
+
+                if (
+                    email !== ""
+                    &&
+                    password.length >= 4
+                ) {
+
+                    loginMessage.className =
+                        "message success-message";
+
+
+                    loginMessage.innerHTML =
+                        "Login successful! Welcome to CareDirect.";
+
+
+                    /*
+                    OPTIONAL:
+                    Save patient email
+                    */
+
+
+                    sessionStorage.setItem(
+                        "patientEmail",
+                        email
+                    );
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "patient.html";
+
+                        },
+
+                        1200
+                    );
+                }
+
+            }
+
+        );
+
+    </script>
+
+
+</body>
+
+</html>

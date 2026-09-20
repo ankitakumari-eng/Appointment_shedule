@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Schedule</title>
+
+    <style>
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #eff6ff;
+
+            --text-color: #1e293b;
+            --text-heading: #0f172a;
+            --muted-color: #64748b;
+
+            --border-color: #e2e8f0;
+            --border-focus: #93c5fd;
+
+            --surface-color: #ffffff;
+            --background-color: #f8fafc;
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 10px rgba(0,0,0,0.07);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .app-container {
+            width: 100%;
+        }
+
+        .app-header {
+            width: 100%;
+            min-height: 64px;
+
+            background-color: var(--surface-color);
+
+            border-bottom: 1px solid var(--border-color);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 10px 24px;
+
+            position: sticky;
+            top: 0;
+
+            z-index: 40;
+
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+
+            gap: 16px;
+
+            min-width: 0;
+        }
+
+        .top-text {
+            width: 32px;
+            height: 32px;
+
+            background-color: var(--primary-color);
+            color: white;
+
+            border-radius: 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.1rem;
+            font-weight: 700;
+
+            flex-shrink: 0;
+        }
+
+        .brand-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+
+            color: var(--primary-color);
+
+            letter-spacing: -0.025em;
+
+            white-space: nowrap;
+        }
+
+        .brand-text .Ankita {
+            color: #1e3a8a;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+
+            gap: 16px;
+
+            flex-shrink: 0;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+
+            border-radius: var(--radius-full);
+
+            background-color: var(--primary-light);
+
+            color: var(--primary-dark);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 700;
+
+            border: 2px solid var(--primary-color);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+
+        /* =========================
+           EDIT SCHEDULE
+        ========================= */
+
+        .edit-section {
+
+            width: 100%;
+            max-width: 1000px;
+
+            margin: 40px auto;
+
+            padding: 0 24px;
+        }
+
+        .page-title {
+            margin: 0 0 6px;
+
+            font-size: 1.7rem;
+
+            color: var(--text-heading);
+        }
+
+        .page-subtitle {
+            margin: 0 0 24px;
+
+            color: var(--muted-color);
+
+            font-size: 0.9rem;
+        }
+
+        .edit-card {
+
+            background-color: var(--surface-color);
+
+            border: 1px solid var(--border-color);
+
+            border-radius: var(--radius-lg);
+
+            padding: 28px;
+
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-title {
+            margin: 0 0 6px;
+
+            font-size: 1.4rem;
+
+            color: var(--text-heading);
+        }
+
+        .card-subtitle {
+            margin: 0 0 24px;
+
+            color: var(--muted-color);
+
+            font-size: 0.9rem;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .edit-form {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .form-group.full-width {
+
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+
+            font-size: 0.875rem;
+
+            font-weight: 600;
+
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: 1px solid var(--border-color);
+
+            border-radius: var(--radius-sm);
+
+            background-color: white;
+
+            color: var(--text-color);
+
+            font-family: inherit;
+
+            font-size: 0.9rem;
+
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+
+            border-color: var(--border-focus);
+
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-group textarea {
+
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+
+        /* =========================
+           APPOINTMENT ID
+        ========================= */
+
+        .appointment-id {
+
+            background-color: #f8fafc;
+
+            color: var(--muted-color);
+
+            cursor: not-allowed;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .edit-actions {
+
+            grid-column: 1 / -1;
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            margin-top: 8px;
+        }
+
+        .btn {
+
+            padding: 10px 18px;
+
+            border-radius: var(--radius-md);
+
+            font-size: 0.875rem;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            border: 1px solid transparent;
+        }
+
+        .btn-secondary {
+
+            background-color: white;
+
+            color: var(--text-color);
+
+            border-color: var(--border-color);
+        }
+
+        .btn-primary {
+
+            background-color: var(--primary-color);
+
+            color: white;
+        }
+
+        .btn-primary:hover {
+
+            background-color: var(--primary-dark);
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .app-header {
+
+                padding: 10px 12px;
+            }
+
+            .header-left {
+
+                gap: 8px;
+            }
+
+            .brand-text {
+
+                font-size: 1rem;
+            }
+
+            .header-right {
+
+                gap: 8px;
+            }
+
+            .user-profile {
+
+                gap: 6px;
+            }
+
+            .user-avatar {
+
+                width: 34px;
+                height: 34px;
+
+                font-size: 0.8rem;
+            }
+
+            .user-name {
+
+                font-size: 0.8rem;
+
+                white-space: nowrap;
+            }
+
+            .edit-section {
+
+                margin: 20px auto;
+
+                padding: 0 12px;
+            }
+
+            .edit-card {
+
+                padding: 20px;
+            }
+
+            .page-title {
+
+                font-size: 1.4rem;
+            }
+
+            .edit-form {
+
+                grid-template-columns: 1fr;
+
+                gap: 16px;
+            }
+
+            .form-group.full-width {
+
+                grid-column: auto;
+            }
+
+            .edit-actions {
+
+                grid-column: auto;
+
+                flex-direction: column;
+            }
+
+            .edit-actions .btn {
+
+                width: 100%;
+            }
+        }
+
+    </style>
+    </head>
+    <script src ="../assets/js/EditShedule.js"></script>
+
+
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <div class="app-container">
+
+        <header class="app-header">
+
+            <div class="header-left">
+
+                <div class="top-text">
+                    ✚
+                </div>
+
+                <div class="brand-text">
+                    <span class="Ankita">Care</span><span>Direct</span>
+                </div>
+
+            </div>
+
+
+            <div class="header-right">
+
+                <div class="user-profile">
+
+                    <div class="user-avatar">
+                        Pt
+                    </div>
+
+                    <div class="user-info">
+
+                        <span class="user-name">
+                            Kaju
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             EDIT SCHEDULE SECTION
+        ========================= -->
+
+        <section class="edit-section">
+
+            <h1 class="page-title">
+                Edit Schedule
+            </h1>
+
+            <p class="page-subtitle">
+                Update the appointment details according to the patient's request.
+            </p>
+
+
+            <div class="edit-card">
+
+                <h2 class="card-title">
+                    Edit Appointment
+                </h2>
+
+                <p class="card-subtitle">
+                    Change the appointment date, time, doctor or department.
+                </p>
+
+
+                <form class="edit-form" id="editScheduleForm">
+
+
+                    <!-- Appointment ID -->
+
+                    <div class="form-group">
+
+                        <label for="appointmentId">
+                            Appointment ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="appointmentId"
+                            value="APT-1025"
+                            class="appointment-id"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <!-- Patient Name -->
+
+                    <div class="form-group">
+
+                        <label for="patientName">
+                            Patient Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="patientName"
+                            value="Kaju"
+                            required
+                        >
+
+                    </div>
+
+
+<!-- Department -->
+<div class="form-group">
+
+    <label for="department">
+        Department
+    </label>
+
+    <select id="department" name="department" required>
+
+        <option value="">
+            Select Department
+        </option>
+
+        <option value="Cardiology">
+            Cardiology
+        </option>
+
+        <option value="Neurology">
+            Neurology
+        </option>
+
+        <option value="Orthopedics">
+            Orthopedics
+        </option>
+
+        <option value="General Medicine">
+            General Medicine
+        </option>
+
+        <option value="Dermatology">
+            Dermatology
+        </option>
+
+        <option value="Pediatrics">
+            Pediatrics
+        </option>
+
+    </select>
+
+</div>
+
+
+<!-- Doctor Name -->
+<div class="form-group">
+
+    <label for="doctorName">
+        Doctor Name
+    </label>
+
+    <select id="doctorName" name="doctorName" required>
+
+        <option value="">
+            Select Doctor
+        </option>
+
+    </select>
+
+</div>
+
+
+                    <!-- Date -->
+
+                    <div class="form-group">
+
+                        <label for="appointmentDate">
+                            Appointment Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="appointmentDate"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Time -->
+
+                    <div class="form-group">
+
+                        <label for="appointmentTime">
+                            Time Slot
+                        </label>
+
+                        <select
+                            id="appointmentTime"
+                            required
+                        >
+
+                            <option value="">
+                                Select Time Slot
+                            </option>
+
+                            <option value="09:00 AM">
+                                09:00 AM
+                            </option>
+
+                            <option value="09:30 AM">
+                                09:30 AM
+                            </option>
+
+                            <option value="10:00 AM">
+                                10:00 AM
+                            </option>
+
+                            <option value="10:30 AM">
+                                10:30 AM
+                            </option>
+
+                            <option value="11:00 AM">
+                                11:00 AM
+                            </option>
+
+                            <option value="11:30 AM">
+                                11:30 AM
+                            </option>
+
+                            <option value="12:00 PM">
+                                12:00 PM
+                            </option>
+
+                            <option value="02:00 PM">
+                                02:00 PM
+                            </option>
+
+                            <option value="02:30 PM">
+                                02:30 PM
+                            </option>
+
+                            <option value="03:00 PM">
+                                03:00 PM
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Reason -->
+
+                    <div class="form-group full-width">
+
+                        <label for="reason">
+                            Reason for Appointment
+                        </label>
+
+                        <textarea
+                            id="reason"
+                            placeholder="Enter reason for appointment..."
+                        >Patient requested to change appointment date.</textarea>
+
+                    </div>
+
+
+                    <!-- Buttons -->
+
+                    <div class="edit-actions">
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            onclick="window.history.back()"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            ✏️ Update Schedule
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+</body>
+</html>

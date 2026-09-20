@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cancel Schedule</title>
+
+    <style>
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #eff6ff;
+
+            --warning-color: #92400e;
+            --warning-light: #fef3c7;
+
+            --danger-color: #991b1b;
+            --danger-light: #fee2e2;
+
+            --surface-color: #ffffff;
+            --background-color: #f8fafc;
+
+            --text-color: #1e293b;
+            --text-heading: #0f172a;
+            --muted-color: #64748b;
+            --border-color: #e2e8f0;
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+            --header-height: 64px;
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background-color: var(--background-color);
+
+            color: var(--text-color);
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .app-header {
+
+            width: 100%;
+            min-height: var(--header-height);
+
+            background-color: var(--surface-color);
+
+            border-bottom: 1px solid var(--border-color);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 10px 24px;
+
+            position: sticky;
+            top: 0;
+
+            z-index: 40;
+
+            box-shadow: var(--shadow-sm);
+        }
+
+
+        .header-left {
+
+            display: flex;
+            align-items: center;
+
+            gap: 16px;
+        }
+
+
+        .top-text {
+
+            width: 32px;
+            height: 32px;
+
+            background-color: var(--primary-color);
+
+            color: white;
+
+            border-radius: var(--radius-sm);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+
+        .brand-text {
+
+            font-size: 1.25rem;
+            font-weight: 700;
+
+            color: var(--primary-color);
+
+            letter-spacing: -0.025em;
+        }
+
+
+        .brand-text .Ankita {
+
+            color: #1e3a8a;
+        }
+
+
+        .header-right {
+
+            display: flex;
+            align-items: center;
+        }
+
+
+        .user-profile {
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        .user-avatar {
+
+            width: 40px;
+            height: 40px;
+
+            border-radius: var(--radius-full);
+
+            background-color: var(--primary-light);
+
+            color: var(--primary-dark);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 700;
+            font-size: 0.9rem;
+
+            border: 2px solid var(--primary-color);
+        }
+
+
+        .user-info {
+
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .user-name {
+
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .page-content {
+
+            min-height: calc(100vh - 64px);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: flex-start;
+
+            padding: 50px 20px;
+        }
+
+
+        .cancel-section {
+
+            width: 100%;
+
+            max-width: 700px;
+        }
+
+
+        .cancel-card {
+
+            background: var(--surface-color);
+
+            border: 1px solid var(--border-color);
+
+            border-radius: var(--radius-lg);
+
+            padding: 32px;
+
+            box-shadow: var(--shadow-md);
+        }
+
+
+        .cancel-title {
+
+            margin: 0 0 8px;
+
+            color: var(--text-heading);
+
+            font-size: 1.6rem;
+        }
+
+
+        .cancel-subtitle {
+
+            margin: 0 0 28px;
+
+            color: var(--muted-color);
+
+            font-size: 0.95rem;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .form-group label {
+
+            font-size: 0.875rem;
+
+            font-weight: 600;
+        }
+
+
+        .form-group select {
+
+            width: 100%;
+
+            padding: 12px 14px;
+
+            border: 1px solid var(--border-color);
+
+            border-radius: var(--radius-sm);
+
+            background: white;
+
+            color: var(--text-color);
+
+            font-size: 0.9rem;
+
+            outline: none;
+        }
+
+
+        .form-group select:focus {
+
+            border-color: var(--primary-color);
+        }
+
+
+        /* =========================
+           APPOINTMENT DETAILS
+        ========================= */
+
+        .appointment-details {
+
+            display: none;
+
+            background: var(--primary-light);
+
+            border: 1px solid #bfdbfe;
+
+            border-radius: var(--radius-md);
+
+            padding: 20px;
+
+            margin-top: 10px;
+
+            margin-bottom: 24px;
+        }
+
+
+        .appointment-details p {
+
+            margin: 9px 0;
+
+            font-size: 0.9rem;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .cancel-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+        }
+
+
+        .btn {
+
+            padding: 11px 18px;
+
+            border-radius: var(--radius-md);
+
+            border: none;
+
+            cursor: pointer;
+
+            font-weight: 600;
+
+            font-size: 0.9rem;
+        }
+
+
+        .btn-cancel {
+
+            background: var(--danger-color);
+
+            color: white;
+        }
+
+
+        .btn-cancel:hover {
+
+            background: #7f1d1d;
+        }
+
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal {
+
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(15, 23, 42, 0.5);
+
+            z-index: 100;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+
+        .modal.show {
+
+            display: flex;
+        }
+
+
+        .modal-content {
+
+            width: 100%;
+
+            max-width: 430px;
+
+            background: white;
+
+            border-radius: var(--radius-lg);
+
+            padding: 28px;
+
+            box-shadow: var(--shadow-lg);
+        }
+
+
+        .modal-content h2 {
+
+            margin: 0 0 8px;
+
+            color: var(--text-heading);
+
+            font-size: 1.3rem;
+        }
+
+
+        .modal-content p {
+
+            color: var(--muted-color);
+
+            font-size: 0.9rem;
+
+            line-height: 1.5;
+
+            margin-bottom: 20px;
+        }
+
+
+        .modal-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            margin-top: 20px;
+        }
+
+
+        .btn-no {
+
+            background: white;
+
+            border: 1px solid var(--border-color);
+
+            color: var(--text-color);
+        }
+
+
+        .btn-no:hover {
+
+            background: var(--background-color);
+        }
+
+
+        .btn-yes {
+
+            background: var(--danger-color);
+
+            color: white;
+        }
+
+
+        .btn-yes:hover {
+
+            background: #7f1d1d;
+        }
+
+
+        /* =========================
+           SUCCESS MESSAGE
+        ========================= */
+
+        .success-message {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 12px 14px;
+
+            border-radius: var(--radius-sm);
+
+            background: #dcfce7;
+
+            color: #166534;
+
+            font-size: 0.9rem;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           CONFIRMATION DETAILS
+        ========================= */
+
+        .selected-appointment {
+
+            background: var(--primary-light);
+
+            border: 1px solid #bfdbfe;
+
+            border-radius: var(--radius-md);
+
+            padding: 15px;
+
+            margin: 15px 0;
+        }
+
+
+        .selected-appointment p {
+
+            margin: 7px 0;
+
+            color: var(--text-color);
+
+        }
+
+
+        .selected-appointment strong {
+
+            color: var(--text-heading);
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .app-header {
+
+                padding: 10px 12px;
+            }
+
+
+            .header-left {
+
+                gap: 8px;
+            }
+
+
+            .brand-text {
+
+                font-size: 1rem;
+            }
+
+
+            .user-profile {
+
+                gap: 6px;
+            }
+
+
+            .user-avatar {
+
+                width: 34px;
+
+                height: 34px;
+
+                font-size: 0.8rem;
+            }
+
+
+            .page-content {
+
+                padding: 25px 12px;
+            }
+
+
+            .cancel-card {
+
+                padding: 22px;
+            }
+
+
+            .cancel-actions {
+
+                justify-content: stretch;
+            }
+
+
+            .cancel-actions .btn {
+
+                width: 100%;
+            }
+
+
+            .modal-content {
+
+                padding: 22px;
+            }
+
+
+            .modal-actions {
+
+                flex-direction: column-reverse;
+            }
+
+
+            .modal-actions .btn {
+
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="app-header">
+
+        <div class="header-left">
+
+            <div class="top-text">
+                ✚
+            </div>
+
+
+            <div class="brand-text">
+
+                <span class="Ankita">Care</span><span>Direct</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="header-right">
+
+            <div class="user-profile">
+
+                <div class="user-avatar">
+                    Pt.
+                </div>
+
+
+                <div class="user-info">
+
+                    <span class="user-name">
+                        Ankita
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="page-content">
+
+        <section class="cancel-section">
+
+            <div class="cancel-card">
+
+
+                <h1 class="cancel-title">
+                    Cancel Appointment
+                </h1>
+
+
+                <p class="cancel-subtitle">
+                    Select the appointment you want to cancel.
+                </p>
+
+
+
+                <!-- APPOINTMENT SELECTION -->
+
+                <div class="form-group">
+
+                    <label for="appointmentSelect">
+                        Select Appointment / Time Slot
+                    </label>
+
+
+                    <select id="appointmentSelect">
+
+                        <option value="">
+                            Select your appointment
+                        </option>
+
+
+                        <!-- YOUR APPOINTMENTS -->
+
+                        <option
+                            value="APT001"
+                            data-patient="Ankita"
+                            data-doctor="Dr. Singh"
+                            data-date="20 August 2026"
+                            data-time="10:00 AM"
+                            data-department="Cardiology">
+
+                            20 August 2026 | 10:00 AM | Dr. Singh
+
+                        </option>
+
+
+                        <option
+                            value="APT002"
+                            data-patient="Ankita"
+                            data-doctor="Dr. Singh"
+                            data-date="21 August 2026"
+                            data-time="11:30 AM"
+                            data-department="Cardiology">
+
+                            21 August 2026 | 11:30 AM | Dr. Singh
+
+                        </option>
+
+
+                        <option
+                            value="APT003"
+                            data-patient="Ankita"
+                            data-doctor="Dr. Singh"
+                            data-date="22 August 2026"
+                            data-time="02:00 PM"
+                            data-department="Cardiology">
+
+                            22 August 2026 | 02:00 PM | Dr. Singh
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- APPOINTMENT DETAILS -->
+
+                <div
+                    class="appointment-details"
+                    id="appointmentDetails">
+
+
+                    <p>
+
+                        <strong>
+                            Patient Name:
+                        </strong>
+
+                        <span id="detailPatient"></span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Doctor:
+                        </strong>
+
+                        <span id="detailDoctor"></span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Date:
+                        </strong>
+
+                        <span id="detailDate"></span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Time Slot:
+                        </strong>
+
+                        <span id="detailTime"></span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Department:
+                        </strong>
+
+                        <span id="detailDepartment"></span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Appointment ID:
+                        </strong>
+
+                        <span id="detailId"></span>
+
+                    </p>
+
+
+                </div>
+
+
+
+                <!-- CANCEL BUTTON -->
+
+                <div class="cancel-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-cancel"
+                        id="cancelBtn">
+
+                        Cancel Appointment
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- SUCCESS MESSAGE -->
+
+                <div
+                    class="success-message"
+                    id="successMessage">
+
+                    Appointment cancelled successfully.
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================
+         ARE YOU SURE MODAL
+    ========================= -->
+
+    <div
+        class="modal"
+        id="confirmModal">
+
+
+        <div class="modal-content">
+
+
+            <h2>
+                Are you sure?
+            </h2>
+
+
+            <p>
+                Are you sure you want to cancel this appointment?
+            </p>
+
+
+
+            <!-- SELECTED APPOINTMENT -->
+
+            <div class="selected-appointment">
+
+
+                <p>
+
+                    <strong>
+                        Patient:
+                    </strong>
+
+                    <span id="confirmPatient"></span>
+
+                </p>
+
+
+                <p>
+
+                    <strong>
+                        Doctor:
+                    </strong>
+
+                    <span id="confirmDoctor"></span>
+
+                </p>
+
+
+                <p>
+
+                    <strong>
+                        Date:
+                    </strong>
+
+                    <span id="confirmDate"></span>
+
+                </p>
+
+
+                <p>
+
+                    <strong>
+                        Time:
+                    </strong>
+
+                    <span id="confirmTime"></span>
+
+                </p>
+
+            </div>
+
+
+
+            <!-- YES / NO -->
+
+            <div class="modal-actions">
+
+
+                <button
+                    type="button"
+                    class="btn btn-no"
+                    id="noBtn">
+
+                    No, Keep Appointment
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn btn-yes"
+                    id="yesBtn">
+
+                    Yes, Cancel Appointment
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script src="../assets/js/cancelShedule.js"></script>
+
+
+</body>
+
+</html>

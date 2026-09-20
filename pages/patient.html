@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal</title>
+
+    <style>
+        :root {
+            /* Brand & Healthcare Color Palette - Clean Utility / Minimal */
+            --primary-color: #2563eb;
+            /* Blue 600 */
+            --primary-dark: #1d4ed8;
+            /* Blue 700 */
+            --primary-light: #eff6ff;
+            /* Blue 50 Tint */
+            --primary-hover: #1e40af;
+
+            --secondary-color: #475569;
+            /* Slate 600 Secondary */
+            --secondary-light: #f8fafc;
+
+            /* Status Colors */
+            --success-color: #166534;
+            /* Completed (Green) */
+            --success-light: #dcfce7;
+            --warning-color: #92400e;
+            /* Pending (Amber) */
+            --warning-light: #fef3c7;
+            --danger-color: #991b1b;
+            /* Cancelled (Red) */
+            --danger-light: #fee2e2;
+            --info-color: #1e40af;
+            /* Upcoming (Blue) */
+            --info-light: #dbeafe;
+
+            /* Surfaces & Backgrounds */
+            --background-color: #f8fafc;
+            /* Clean Slate 50 canvas */
+            --surface-color: #ffffff;
+            /* Pure white containers */
+            --surface-hover: #f8fafc;
+
+            /* Typography & Borders */
+            --text-color: #1e293b;
+            /* Slate 800 Main Text */
+            --text-heading: #0f172a;
+            /* Slate 900 Headings */
+            --muted-color: #64748b;
+            /* Slate 500 Subtitle / Secondary Text */
+            --border-color: #e2e8f0;
+            /* Slate 200 Border */
+            --border-focus: #93c5fd;
+
+            /* Geometry & Elevation */
+            --font-family: 'SF Pro Text', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Sidebar Dimensions */
+            --sidebar-width: 256px;
+            --header-height: 64px;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: 700;
+            color: var(--text-color);
+            line-height: 1.25;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+
+        .top-text {
+            font-size: 24px;
+            font-weight: bold;
+            width: 32px;
+            height: 32px;
+            background-color: #2563eb;
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            box-shadow: none;
+        }
+
+        .brand-text {
+
+            font-size: 24px;
+            font-weight: bold;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2563eb;
+            letter-spacing: -0.025em;
+        }
+
+        .brand-text .Ankita {
+            color: #1e3a8a;
+        }
+
+        .app-container {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            /* Prevents overflow issues */
+            margin-left: var(--sidebar-width);
+            transition: margin-left var(--transition-normal);
+        }
+
+        .page-content {
+            padding: 24px;
+            flex: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .app-header {
+            width: 100%;
+            height: var(--header-height);
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 24px;
+            box-sizing: border-box;
+
+            position: sticky;
+            top: 0;
+            z-index: 40;
+
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .sidebar-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: none;
+            /* Visible on smaller screens */
+            align-items: center;
+            gap: 6px;
+            font-size: 0.875rem;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: var(--surface-hover);
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: 2px solid var(--primary-color);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--muted-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #ffffff;
+
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow var(--transition-fast);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background-color: var(--surface-color);
+        }
+
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            unicode-bidi: isolate;
+            border-color: inherit;
+        }
+
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+
+        /* ==============================
+   MODULE HEADER
+============================== */
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+
+            padding: 32px 0;
+            margin-bottom: 24px;
+        }
+
+        .module-title-group {
+            min-width: 0;
+        }
+
+        .module-title-group h1 {
+            margin: 0 0 8px;
+            font-size: 2rem;
+            color: var(--text-heading);
+        }
+
+        .module-title-group p {
+            margin: 0;
+            color: var(--muted-color);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+
+        /* ==============================
+   LARGE BUTTON
+============================== */
+
+        .btn-lg {
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+
+        /* ==============================
+   HISTORY SECTION
+============================== */
+
+        .history-section {
+            width: 100%;
+        }
+
+        .card-title {
+            margin: 0 0 6px;
+            font-size: 1.5rem;
+        }
+
+        .card-subtitle {
+            color: var(--muted-color);
+            font-size: 0.95rem;
+        }
+
+
+        /* ==============================
+   FILTERS
+============================== */
+
+        .history-filters {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .filter-group select {
+            padding: 9px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .schedule-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* ==============================
+   RESPONSIVE DESIGN
+============================== */
+
+        @media (max-width: 768px) {
+
+            .app-header {
+                padding: 0 16px;
+            }
+
+            .module-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .module-title-group h1 {
+                font-size: 1.7rem;
+            }
+
+            .btn-lg {
+                width: auto;
+            }
+
+            .history-filters {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .app-header {
+                height: auto;
+                min-height: var(--header-height);
+                padding: 12px;
+            }
+
+            .header-left {
+                gap: 8px;
+            }
+
+            .brand-text {
+                font-size: 1rem;
+            }
+
+            /* New Appointment mobile par header mein nahi dikhega */
+            .header-right>.btn {
+                display: none;
+            }
+
+            .header-right {
+                gap: 6px;
+            }
+
+            .user-profile {
+                gap: 6px;
+            }
+
+            .user-avatar {
+                width: 34px;
+                height: 34px;
+                flex-shrink: 0;
+            }
+
+            .user-name {
+                font-size: 0.8rem;
+                white-space: nowrap;
+            }
+
+            .page-content {
+                padding: 16px;
+            }
+
+            .module-header {
+                padding: 20px 0;
+                gap: 16px;
+            }
+
+            .module-title-group h1 {
+                font-size: 1.5rem;
+            }
+
+            .module-title-group p {
+                font-size: 0.9rem;
+            }
+
+            .btn-lg {
+                width: 100%;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+            }
+
+            .history-filters {
+                width: 100%;
+            }
+
+            .filter-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .filter-group select {
+                flex: 1;
+                max-width: 180px;
+            }
+
+            .table-responsive {
+                overflow-x: auto;
+            }
+
+            .table {
+                min-width: 800px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .app-header {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 0 12px;
+                gap: 8px;
+            }
+
+            .header-left {
+                flex: 1;
+                min-width: 0;
+                gap: 8px;
+            }
+
+            .brand-text {
+                font-size: 1rem;
+                white-space: nowrap;
+            }
+
+            .header-right {
+                flex-shrink: 0;
+                gap: 6px;
+            }
+
+            /* Hide New Appointment from header on mobile */
+            .header-right>.btn {
+                display: none;
+            }
+
+            .user-profile {
+                gap: 6px;
+            }
+
+            .user-avatar {
+                width: 34px;
+                height: 34px;
+                flex-shrink: 0;
+                font-size: 0.8rem;
+            }
+
+            .user-name {
+                font-size: 0.8rem;
+                white-space: nowrap;
+            }
+        }
+    </style>
+    <script src="../assets/js/patient.js"></script>
+</head>
+
+
+<body>
+    <!-- <a href="createShedule.html">Create Schedule</a>
+    <a href="EditShedule.html">Edit Schedule</a>
+    <a href="cancelShedule.html">Cancel Schedule</a> -->
+    <div class="app-container">
+
+        <!-- HEADER -->
+        <header class="app-header">
+
+            <div class="header-left">
+                <div class="top-text">✚</div>
+
+                <div class="brand-text">
+                    <span class="Ankita">Care</span><span>Direct</span>
+                </div>
+            </div>
+
+            <div class="header-right">
+
+                <button class="btn btn-primary" onclick="openCreateScheduleModal()">
+                    ➕ New Appointment
+                </button>
+
+                <div class="user-profile">
+                    <div class="user-avatar">Pt</div>
+
+                    <div class="user-info">
+                        <span class="user-name">Kumari Anisha</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="page-content">
+
+            <!-- CREATE SCHEDULE -->
+            <section class="module-header">
+
+                <div class="module-title-group">
+                    <h1>Appointment Scheduling Dashboard</h1>
+
+                    <p>
+                        Manage patient visits, monitor today's calendar,
+                        create appointments, and view schedule history.
+                    </p>
+                </div>
+
+                <div class="schedule-actions">
+
+                    <main>
+
+                        <button class="btn btn-primary btn-lg" onclick="window.location.href='createShedule.html'">
+                            📅 Create Schedule
+                        </button>
+
+
+
+                        &nbsp;&nbsp;
+
+                        <button class="btn btn-primary btn-lg" onclick="window.location.href='EditShedule.html'">
+                            ✏️ Edit Schedule
+                        </button>
+                        &nbsp;&nbsp;
+                        <button class="btn btn-primary btn-lg" onclick="window.location.href='cancelShedule.html'">
+                            🗑️ Cancel Schedule
+                        </button>
+                    </main>
+
+                </div>
+
+            </section>
+            <br><br>
+
+
+            <!-- SCHEDULE HISTORY -->
+            <section class="history-section card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2 class="card-title">
+                            Schedule History Log
+                        </h2>
+
+                        <div class="card-subtitle">
+                            Comprehensive archive of all patient consultations and cancellations
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <div class="history-filters">
+
+                    <div class="filter-group">
+
+                        <label for="history-status-select">
+                            Status:
+                        </label>
+
+                        <select id="history-status-select">
+                            <option value="all">All Statuses</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="filter-group">
+
+                        <label for="history-date-filter">
+                            Period:
+                        </label>
+
+                        <select id="history-date-filter">
+                            <option value="all">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">Past 7 Days</option>
+                            <option value="month">This Month</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="table-responsive">
+
+                    <table class="table">
+
+                        <thead>
+                            <tr>
+                                <th>APT ID</th>
+                                <th>Patient Name</th>
+                                <th>Doctor</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Department</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="history-tbody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
