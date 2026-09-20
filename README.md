@@ -2,12 +2,20 @@
 
 > A modern, responsive, and modular web application for managing hospital appointment bookings, doctor schedules, department rosters, and patient-doctor consultations.
 
+<p align="center">
+  <img src="assets/images/portal-landing.png" alt="CareDirect Landing Portal" width="88%" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);" />
+</p>
+
 ---
 
 ## 📑 Table of Contents
 
 - [Overview](#-overview)
 - [Key Features](#-key-features)
+- [Visual Interface & Screenshots](#-visual-interface--screenshots)
+  - [1. Landing & Authentication](#1-landing--authentication)
+  - [2. Doctor & Patient Dashboards](#2-doctor--patient-dashboards)
+  - [3. Schedule Management Operations](#3-schedule-management-operations)
 - [System Architecture](#-system-architecture)
 - [Application Flow & Diagrams](#-application-flow--diagrams)
   - [High-Level Architecture](#high-level-architecture)
@@ -15,10 +23,10 @@
   - [Appointment State Lifecycle](#appointment-state-lifecycle)
 - [Project Directory Structure](#-project-directory-structure)
 - [Module Breakdown](#-module-breakdown)
-  - [1. Portals & Authentication](#1-portals--authentication)
-  - [2. Doctor Management Portal](#2-doctor-management-portal)
-  - [3. Patient Booking Portal](#3-patient-booking-portal)
-  - [4. Schedule Operations (CRUD)](#4-schedule-operations-crud)
+  - [Portals & Authentication](#portals--authentication)
+  - [Doctor Management Portal](#doctor-management-portal)
+  - [Patient Booking Portal](#patient-booking-portal)
+  - [Schedule Operations (CRUD)](#schedule-operations-crud)
 - [Design System & Styling](#-design-system--styling)
 - [Getting Started](#-getting-started)
 - [Future Enhancements](#-future-enhancements)
@@ -53,6 +61,65 @@ The platform is designed to eliminate appointment scheduling conflicts, improve 
 - 📱 **Modern & Responsive UI**:
   - Built using CSS custom properties (design tokens), flexible CSS Grid, and Flexbox.
   - Interactive toast notifications, backdrop-closing modals, and responsive mobile navigation drawers.
+
+---
+
+## 📸 Visual Interface & Screenshots
+
+### 1. Landing & Authentication
+
+The centralized gateway allows healthcare providers and patients to select their respective workspaces. Each portal features secure authentication forms designed for simplicity.
+
+| Central Gateway | Doctor Login | Patient Login |
+|:---:|:---:|:---:|
+| <img src="assets/images/portal-landing.png" alt="Portal Landing" width="100%" /> | <img src="assets/images/doctor-login.png" alt="Doctor Login" width="100%" /> | <img src="assets/images/patient-login.png" alt="Patient Login" width="100%" /> |
+
+---
+
+### 2. Doctor & Patient Dashboards
+
+Dedicated dashboards provide tailored views: doctors monitor daily metrics and patient appointments, while patients can book slots and view their consultation status.
+
+#### 🩺 Doctor Dashboard
+> Monitor patient queues, upcoming consultations, and appointment statistics across all medical departments.
+
+<p align="center">
+  <img src="assets/images/doctor-dashboard.png" alt="Doctor Dashboard" width="92%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
+</p>
+
+#### 👤 Patient Portal
+> Seamless interface for patients to view appointment history, check statuses, and book new consultations.
+
+<p align="center">
+  <img src="assets/images/patient-portal.png" alt="Patient Dashboard" width="92%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
+</p>
+
+---
+
+### 3. Schedule Management Operations
+
+Streamlined screens for creating, modifying, and canceling medical appointments.
+
+#### 📅 Create Schedule
+> Dynamically loads doctors according to the selected clinical department (Cardiology, Neurology, Orthopedics, etc.).
+
+<p align="center">
+  <img src="assets/images/create-schedule.png" alt="Create Schedule" width="85%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
+</p>
+
+#### ✏️ Edit Schedule
+> Pre-fills existing appointment information, allowing quick rescheduling and patient detail updates.
+
+<p align="center">
+  <img src="assets/images/edit-schedule.png" alt="Edit Schedule" width="85%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
+</p>
+
+#### ❌ Cancel Schedule
+> Provides a safe cancellation procedure requiring reason submission and confirmation to prevent accidental slot deletion.
+
+<p align="center">
+  <img src="assets/images/cancel-schedule.png" alt="Cancel Schedule" width="80%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
+</p>
 
 ---
 
@@ -207,6 +274,16 @@ health-rel-project/
 │   ├── css/
 │   │   └── style.css            # Central CSS stylesheet (Theme variables, typography, responsive grids)
 │   │
+│   ├── images/                  # High-resolution screenshots of portals and workflows
+│   │   ├── portal-landing.png   # Central landing gateway preview
+│   │   ├── doctor-login.png     # Doctor authentication view
+│   │   ├── patient-login.png    # Patient authentication view
+│   │   ├── doctor-dashboard.png # Doctor appointment management dashboard
+│   │   ├── patient-portal.png   # Patient booking and history interface
+│   │   ├── create-schedule.png  # Create schedule / booking form
+│   │   ├── edit-schedule.png    # Edit schedule / reschedule form
+│   │   └── cancel-schedule.png  # Appointment cancellation interface
+│   │
 │   └── js/
 │       ├── main.js              # Core UI helpers (Mobile drawer, modal controller, toast engine)
 │       ├── doctor.js            # Doctor dashboard controller (Statistics, data filters, tables)
@@ -234,22 +311,22 @@ health-rel-project/
 
 ## 🧩 Module Breakdown
 
-### 1. Portals & Authentication
+### Portals & Authentication
 - **`pages/button.html`**: The unified entry point. Provides access to either the Doctor Portal or Patient Portal with medical-themed navigation cards.
 - **`pages/doctorlogin.html` & `pages/patientlogin.html`**: Clean login cards featuring password visibility toggles, credential validation, and direct redirects to respective dashboards.
 
-### 2. Doctor Management Portal
+### Doctor Management Portal
 - **`pages/Doctor.html` & `assets/js/doctor.js`**:
   - Live metric widgets displaying counts of Total, Upcoming, Pending, Completed, and Cancelled appointments.
   - Filter by date picker or department filter to instantly view matching schedules.
   - Interactive table actions: View patient details, edit time slots, or cancel visits.
 
-### 3. Patient Booking Portal
+### Patient Booking Portal
 - **`pages/patient.html` & `assets/js/patient.js`**:
   - Self-service booking modal allowing patients to choose appointment date, department, and doctor.
   - Displays upcoming appointments with status indicators and quick cancellation options.
 
-### 4. Schedule Operations (CRUD)
+### Schedule Operations (CRUD)
 - **`createShedule.html` & `createShedule.js`**:
   - Dynamic doctor population based on selected department:
     - *Cardiology, Neurology, Orthopedics, General Medicine, Dermatology, Pediatrics*.
