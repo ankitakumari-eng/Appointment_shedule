@@ -1,6 +1,6 @@
 # 🏥 CareDirect — Hospital Appointment & Schedule Management System
 
-> A modern, responsive, and modular web application for managing hospital appointment bookings, doctor schedules, department rosters, and patient-doctor consultations.
+> A modern, responsive web application for managing hospital appointment bookings, patient schedules, and doctor consultations. Currently built as a **pure frontend system using HTML5, CSS3, and Vanilla JavaScript**, with a full-stack backend planned for future development.
 
 <p align="center">
   <img src="assets/images/portal-landing.png" alt="CareDirect Landing Portal" width="88%" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);" />
@@ -11,56 +11,72 @@
 ## 📑 Table of Contents
 
 - [Overview](#-overview)
+- [Current Implementation & Tech Stack](#-current-implementation--tech-stack)
 - [Key Features](#-key-features)
 - [Visual Interface & Screenshots](#-visual-interface--screenshots)
   - [1. Landing & Authentication](#1-landing--authentication)
-  - [2. Doctor & Patient Dashboards](#2-doctor--patient-dashboards)
-  - [3. Schedule Management Operations](#3-schedule-management-operations)
+  - [2. Patient Portal & Scheduling Operations](#2-patient-portal--scheduling-operations)
+  - [3. Doctor Portal & Monitoring Dashboard](#3-doctor-portal--monitoring-dashboard)
 - [System Architecture](#-system-architecture)
 - [Application Flow & Diagrams](#-application-flow--diagrams)
-  - [High-Level Architecture](#high-level-architecture)
-  - [Appointment Workflow](#appointment-workflow)
+  - [High-Level System Architecture](#high-level-system-architecture)
+  - [Patient & Doctor Workflow](#patient--doctor-workflow)
   - [Appointment State Lifecycle](#appointment-state-lifecycle)
 - [Project Directory Structure](#-project-directory-structure)
 - [Module Breakdown](#-module-breakdown)
-  - [Portals & Authentication](#portals--authentication)
-  - [Doctor Management Portal](#doctor-management-portal)
-  - [Patient Booking Portal](#patient-booking-portal)
-  - [Schedule Operations (CRUD)](#schedule-operations-crud)
+  - [1. Portal Gateway & Authentication](#1-portal-gateway--authentication)
+  - [2. Patient Scheduling Module](#2-patient-scheduling-module)
+  - [3. Doctor Monitoring Module](#3-doctor-monitoring-module)
 - [Design System & Styling](#-design-system--styling)
 - [Getting Started](#-getting-started)
-- [Future Enhancements](#-future-enhancements)
+- [Future Backend Roadmap](#-future-backend-roadmap)
 - [Author & Credits](#-author--credits)
 
 ---
 
 ## 🌟 Overview
 
-The **CareDirect Appointment & Schedule Management Platform** simplifies healthcare scheduling for hospitals, clinics, and medical practices. Built with a clean frontend architecture, it provides doctors and patients with tailored portals to streamline appointment creation, updates, cancellations, and status tracking.
+The **CareDirect Appointment & Schedule Management Platform** simplifies healthcare scheduling for hospital patients and doctors. Designed with a modular architecture, the system provides separate experiences tailored for patients and medical staff:
 
-The platform is designed to eliminate appointment scheduling conflicts, improve patient access to specialists across diverse departments (Cardiology, Neurology, Orthopedics, Pediatrics, Dermatology, and General Medicine), and provide clear operational visibility.
+- **Patients** have complete control to **book new appointments**, **reschedule (edit) their slots**, and **cancel bookings** across multiple clinical departments (Cardiology, Neurology, Orthopedics, General Medicine, Dermatology, and Pediatrics).
+- **Doctors** access a centralized dashboard to **monitor today's schedule**, **search patients by Appointment ID**, view consultation metrics, and inspect the appointment calendar.
+
+---
+
+## 💻 Current Implementation & Tech Stack
+
+> [!NOTE]
+> **Current Status**: This project is currently developed purely using **Frontend Web Technologies (HTML5, CSS3, Vanilla JavaScript)**. All interactions, dynamic department-to-doctor mappings, modal controls, and state management run directly on the client side in the browser. A persistent backend (FastAPI / PostgreSQL) is planned for future phases.
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        CURRENT TECH STACK                              │
+├───────────────────┬───────────────────┬────────────────────────────────┤
+│      HTML5        │       CSS3        │     JavaScript (ES6+)          │
+│  Semantic Markup  │  Design Tokens    │  DOM Manipulation & Events     │
+│  Modular Pages    │  Flexbox & Grid   │  Dynamic Field Mapping         │
+│  Accessible Forms │  Responsive Media │  Modal Dialogs & Toast Alerts  │
+└───────────────────┴───────────────────┴────────────────────────────────┘
+```
 
 ---
 
 ## ✨ Key Features
 
-- 🩺 **Doctor Dashboard**:
-  - Live statistics summary cards (Total Appointments, Completed, Upcoming, Pending, and Cancelled).
-  - Search and filter appointments by date, patient name, and department.
-  - Quick action controls to view details, reschedule, or cancel consultations.
-- 👤 **Patient Portal**:
-  - Intuitive booking interface for choosing medical departments and selecting qualified specialists.
-  - Real-time display of booking status and appointment timestamps.
-- 📅 **Schedule Management (CRUD)**:
-  - **Create Schedule**: Dynamic department-to-doctor dropdown mapping and slot generation.
-  - **Edit Schedule**: Flexible updates for consultation timings and doctor reassignments.
-  - **Cancel Schedule**: Safe cancellation workflow with reason input and confirmation modals.
+- 👤 **Patient Portal & Self-Service Scheduling**:
+  - **Create Schedule**: Patients select department, doctor, date, time slot, and reason for visit.
+  - **Edit Schedule**: Patients update or reschedule their existing appointment slots.
+  - **Cancel Schedule**: Patients cancel appointments with mandatory reason logging and modal confirmation.
+  - **History Log**: Patients review their previous and upcoming consultation statuses.
+- 🩺 **Doctor Monitoring Dashboard**:
+  - **Daily Counters**: Summary metrics for Total Patients, Today's Appointments, Pending, Cancelled, Completed, and Upcoming.
+  - **Patient Search**: Fast search lookup by Appointment ID (e.g., `APT-1025`).
+  - **Schedule Calendar**: Date-picker and calendar grid to review department appointments.
 - 🔐 **Dual Portal Gateway**:
-  - Centralized landing page with separate access points for doctors and patients.
-  - Dedicated authentication views with input validation and toggleable secure views.
-- 📱 **Modern & Responsive UI**:
-  - Built using CSS custom properties (design tokens), flexible CSS Grid, and Flexbox.
-  - Interactive toast notifications, backdrop-closing modals, and responsive mobile navigation drawers.
+  - Centralized landing hub with separate access gates for Doctors and Patients.
+  - Clean login forms featuring toggleable password visibility and validation.
+- 📱 **Responsive UI**:
+  - Mobile drawer navigation, backdrop modals, and consistent healthcare design system.
 
 ---
 
@@ -68,7 +84,7 @@ The platform is designed to eliminate appointment scheduling conflicts, improve 
 
 ### 1. Landing & Authentication
 
-The centralized gateway allows healthcare providers and patients to select their respective workspaces. Each portal features secure authentication forms designed for simplicity.
+The central gateway welcomes users and routes them to either the Doctor Portal or the Patient Portal.
 
 | Central Gateway | Doctor Login | Patient Login |
 |:---:|:---:|:---:|
@@ -76,46 +92,33 @@ The centralized gateway allows healthcare providers and patients to select their
 
 ---
 
-### 2. Doctor & Patient Dashboards
+### 2. Patient Portal & Scheduling Operations
 
-Dedicated dashboards provide tailored views: doctors monitor daily metrics and patient appointments, while patients can book slots and view their consultation status.
+From the **Patient Dashboard**, patients can view their appointments and access all scheduling operations: **Create Schedule**, **Edit Schedule**, and **Cancel Schedule**.
 
-#### 🩺 Doctor Dashboard
-> Monitor patient queues, upcoming consultations, and appointment statistics across all medical departments.
-
-<p align="center">
-  <img src="assets/images/doctor-dashboard.png" alt="Doctor Dashboard" width="92%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
-</p>
-
-#### 👤 Patient Portal
-> Seamless interface for patients to view appointment history, check statuses, and book new consultations.
+#### 👤 Patient Dashboard
+> The patient's home screen featuring quick navigation buttons for creating, editing, and cancelling schedules, alongside the appointment history log.
 
 <p align="center">
   <img src="assets/images/patient-portal.png" alt="Patient Dashboard" width="92%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
 </p>
 
----
-
-### 3. Schedule Management Operations
-
-Streamlined screens for creating, modifying, and canceling medical appointments.
-
-#### 📅 Create Schedule
-> Dynamically loads doctors according to the selected clinical department (Cardiology, Neurology, Orthopedics, etc.).
+#### 📅 Create Schedule (Patient Booking)
+> Allows patients to select a medical department, which dynamically populates available specialist doctors and time slots.
 
 <p align="center">
   <img src="assets/images/create-schedule.png" alt="Create Schedule" width="85%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
 </p>
 
-#### ✏️ Edit Schedule
-> Pre-fills existing appointment information, allowing quick rescheduling and patient detail updates.
+#### ✏️ Edit Schedule (Patient Rescheduling)
+> Enables patients to modify existing appointment dates, times, doctors, or reasons for their visit.
 
 <p align="center">
   <img src="assets/images/edit-schedule.png" alt="Edit Schedule" width="85%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
 </p>
 
-#### ❌ Cancel Schedule
-> Provides a safe cancellation procedure requiring reason submission and confirmation to prevent accidental slot deletion.
+#### ❌ Cancel Schedule (Patient Cancellation)
+> A safe cancellation interface where patients choose their booking, provide a cancellation reason, and confirm through a safety modal.
 
 <p align="center">
   <img src="assets/images/cancel-schedule.png" alt="Cancel Schedule" width="80%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
@@ -123,142 +126,168 @@ Streamlined screens for creating, modifying, and canceling medical appointments.
 
 ---
 
+### 3. Doctor Portal & Monitoring Dashboard
+
+#### 🩺 Doctor Schedule Dashboard
+> Dedicated panel for healthcare providers to track today's appointments, monitor patient metrics, search specific appointment IDs, and review daily consultation history.
+
+<p align="center">
+  <img src="assets/images/doctor-dashboard.png" alt="Doctor Dashboard" width="92%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
+</p>
+
+---
+
 ## 🏗️ System Architecture
 
-The project follows a clean separation of concerns between structure (**HTML5**), presentation (**CSS3 Modern Design System**), and behavior (**ES6+ JavaScript**). It is architected for straightforward integration into a backend API (such as FastAPI or Express.js) and a database (such as PostgreSQL).
+The current architecture is **100% frontend client-side**, designed with clean modularity so that API endpoints and database storage can be attached seamlessly in the next phase.
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                      CareDirect Client                          │
-├────────────────────────────────┬────────────────────────────────┤
-│          Doctor Portal         │         Patient Portal         │
-│   (Doctor.html, doctor.js)     │   (patient.html, patient.js)   │
-├────────────────────────────────┴────────────────────────────────┤
-│                    Schedule Management Engine                   │
-│   • createShedule.js   • EditShedule.js   • cancelShedule.js    │
-├─────────────────────────────────────────────────────────────────┤
-│                    Shared UI & Design System                    │
-│   • style.css          • main.js (Modals, Toasts, Drawer)       │
-└────────────────────────────────┬────────────────────────────────┘
-                                 │
-                   (Future REST API Integration)
-                                 ▼
-┌─────────────────────────────────────────────────────────────────┐
-│             FastAPI Backend  +  PostgreSQL Database             │
-└─────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    CareDirect — Presentation Layer (HTML5/CSS3)                 │
+├───────────────────────────────────────┬─────────────────────────────────────────┤
+│            PATIENT PORTAL             │              DOCTOR PORTAL              │
+│  • patient.html   (Dashboard)         │  • Doctor.html  (Schedule Dashboard)    │
+│  • createShedule.html (Create)        │  • doctorlogin.html (Doctor Login)      │
+│  • EditShedule.html   (Edit)          │                                         │
+│  • cancelShedule.html (Cancel)        │                                         │
+│  • patientlogin.html  (Patient Login) │                                         │
+├───────────────────────────────────────┴─────────────────────────────────────────┤
+│                     Client Logic Layer (Vanilla JavaScript ES6+)                │
+│  • patient.js         • createShedule.js   • EditShedule.js   • cancelShedule.js│
+│  • doctor.js          • main.js (Shared Modals, Toast Alerts, Drawer)          │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│               CURRENT STATE: Browser In-Memory / Client Storage                 │
+└───────────────────────────────────────┬─────────────────────────────────────────┘
+                                        │
+                         (PLANNED FUTURE IMPLEMENTATION)
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                 Backend API (FastAPI)  +  Database (PostgreSQL)                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## 📊 Application Flow & Diagrams
 
-### High-Level Architecture
+### High-Level System Architecture
 
-The flowchart below illustrates how users enter the system through the landing portal, authenticate, and interact with the modular scheduling engine:
+This diagram illustrates how users access the system, highlighting that **Create Schedule, Edit Schedule, and Cancel Schedule belong to the Patient Portal**:
 
 ```mermaid
 flowchart TD
-    subgraph Client_Views["Presentation Layer (HTML5 / CSS3)"]
+    subgraph Gateway["Entry Gateway"]
         Landing["Landing Hub (button.html)"]
-        DocLogin["Doctor Login (doctorlogin.html)"]
+    end
+
+    subgraph Patient_Flow["Patient Workflow (HTML / CSS / JS)"]
         PatLogin["Patient Login (patientlogin.html)"]
-        DocDash["Doctor Dashboard (Doctor.html)"]
-        PatDash["Patient Portal (patient.html)"]
+        PatDash["Patient Dashboard (patient.html)"]
         CreateView["Create Schedule (createShedule.html)"]
         EditView["Edit Schedule (EditShedule.html)"]
         CancelView["Cancel Schedule (cancelShedule.html)"]
+        
+        PatJS["patient.js / Dynamic Modals"]
+        CreateJS["createShedule.js"]
+        EditJS["EditShedule.js"]
+        CancelJS["cancelShedule.js"]
     end
 
-    subgraph Client_Logic["Controller & Logic Layer (JavaScript ES6+)"]
-        MainJS["Global Utilities & Modals (main.js)"]
-        DocJS["Doctor Schedule Controller (doctor.js)"]
-        PatJS["Patient Booking Controller (patient.js)"]
-        CreateJS["Slot Creation Engine (createShedule.js)"]
-        EditJS["Schedule Modification (EditShedule.js)"]
-        CancelJS["Cancellation Engine (cancelShedule.js)"]
+    subgraph Doctor_Flow["Doctor Workflow (HTML / CSS / JS)"]
+        DocLogin["Doctor Login (doctorlogin.html)"]
+        DocDash["Doctor Dashboard (Doctor.html)"]
+        DocJS["doctor.js (Calendar, Search, Metrics)"]
     end
 
-    subgraph Data_Layer["Data & Persistence Layer"]
-        AppState["In-Memory State & DOM Binding"]
-        Backend["REST API / Database (FastAPI & PostgreSQL)"]
+    subgraph Storage_Layer["State & Future Backend"]
+        ClientState["Current: Client-Side State & DOM"]
+        FutureBackend["Future: FastAPI REST API + PostgreSQL"]
     end
 
-    Landing --> DocLogin
-    Landing --> PatLogin
-    DocLogin --> DocDash
+    Landing -->|"Login as Patient"| PatLogin
+    Landing -->|"Login as Doctor"| DocLogin
+
     PatLogin --> PatDash
 
-    DocDash --> CreateView
-    DocDash --> EditView
-    DocDash --> CancelView
+    PatDash -->|"📅 Book New Slot"| CreateView
+    PatDash -->|"✏️ Modify Booking"| EditView
+    PatDash -->|"🗑️ Withdraw Slot"| CancelView
 
-    DocDash -.-> DocJS
-    PatDash -.-> PatJS
     CreateView -.-> CreateJS
     EditView -.-> EditJS
     CancelView -.-> CancelJS
+    PatDash -.-> PatJS
 
-    DocJS --> AppState
-    PatJS --> AppState
-    CreateJS --> AppState
-    EditJS --> AppState
-    CancelJS --> AppState
+    DocLogin --> DocDash
+    DocDash -.-> DocJS
 
-    AppState -.-> Backend
+    CreateJS --> ClientState
+    EditJS --> ClientState
+    CancelJS --> ClientState
+    DocJS --> ClientState
+
+    ClientState -.->|"Planned Integration"| FutureBackend
 ```
 
 ---
 
-### Appointment Workflow
+### Patient & Doctor Workflow
 
-The sequence diagram below outlines the full lifecycle of a consultation request between the patient, the doctor, and the scheduling handler:
+This sequence diagram illustrates how a patient creates and manages appointments, and how the doctor reviews the schedule:
 
 ```mermaid
 sequenceDiagram
     autonumber
     actor Patient
     actor Doctor
-    participant UI as CareDirect Interface
-    participant Logic as Schedule Engine
-    participant Store as State / Backend
+    participant PatUI as Patient Portal (CareDirect)
+    participant DocUI as Doctor Portal (CareDirect)
+    participant Engine as Frontend JavaScript Engine
+    participant FutureAPI as Future Backend API
 
-    Note over Doctor, UI: 1. Schedule Initialization
-    Doctor->>UI: Access Doctor Portal
-    Doctor->>UI: Open "Create Schedule" Form
-    Doctor->>Logic: Select Department, Date & Time Slots
-    Logic->>Store: Save Doctor Availability
-    Store-->>UI: Confirm Slot Created
+    Note over Patient, PatUI: 1. Patient Creates / Books an Appointment
+    Patient->>PatUI: Open Patient Portal & click "Create Schedule"
+    PatUI->>Engine: Load departments & doctor options (createShedule.js)
+    Patient->>PatUI: Select department, doctor, date, and time
+    Patient->>Engine: Submit Appointment form
+    Engine-->>PatUI: Save record (Client State) & show confirmation
 
-    Note over Patient, UI: 2. Appointment Booking
-    Patient->>UI: Open Patient Portal
-    Patient->>UI: Select Department & Available Doctor
-    Patient->>Logic: Submit Appointment Form
-    Logic->>Store: Persist Appointment (Status: Upcoming / Pending)
-    Store-->>UI: Display Booking Confirmation
+    Note over Patient, PatUI: 2. Patient Manages Schedule (Edit / Cancel)
+    opt When Rescheduling is Needed
+        Patient->>PatUI: Click "Edit Schedule" (EditShedule.html)
+        Patient->>Engine: Update date / time / doctor
+        Engine-->>PatUI: Update appointment record
+    end
+    opt When Cancellation is Needed
+        Patient->>PatUI: Click "Cancel Schedule" (cancelShedule.html)
+        Patient->>Engine: Provide reason & confirm in modal
+        Engine-->>PatUI: Mark appointment as Cancelled
+    end
 
-    Note over Doctor, UI: 3. Consultation & Status Update
-    Doctor->>UI: Review Daily Schedule on Dashboard
-    Doctor->>Logic: Mark Consultation Complete / Reschedule / Cancel
-    Logic->>Store: Update Appointment Status
-    Store-->>UI: Reflect Updated Stats & List
+    Note over Doctor, DocUI: 3. Doctor Reviews Schedule & Patients
+    Doctor->>DocUI: Log in to Doctor Portal (Doctor.html)
+    DocUI->>Engine: Fetch appointments (doctor.js)
+    Doctor->>DocUI: Search patient by Appointment ID / Pick calendar date
+    DocUI-->>Doctor: Display appointment details & metrics
+    
+    Note over Engine, FutureAPI: Future Backend Sync (FastAPI + PostgreSQL)
+    Engine-.->FutureAPI: Will send persistent REST API requests (POST/PUT/DELETE)
 ```
 
 ---
 
 ### Appointment State Lifecycle
 
-The state diagram below depicts the valid state transitions for an appointment within the system:
-
 ```mermaid
 stateDiagram-v2
-    [*] --> Scheduled: Patient Books Appointment
-    Scheduled --> Upcoming: Slot Confirmed
-    Upcoming --> Pending: Awaiting Doctor Check-in
-    Pending --> Completed: Consultation Completed
-    Upcoming --> Rescheduled: Modified via Edit Schedule
-    Rescheduled --> Upcoming: Slot Reconfirmed
-    Upcoming --> Cancelled: Cancelled by Patient / Doctor
-    Pending --> Cancelled: No-show or Emergency Cancellation
+    [*] --> Scheduled: Patient Books Slot (createShedule.html)
+    Scheduled --> Upcoming: Slot Registered
+    Upcoming --> Pending: Awaiting Doctor Consultation
+    Pending --> Completed: Doctor Finishes Consultation
+    Upcoming --> Rescheduled: Patient Edits Slot (EditShedule.html)
+    Rescheduled --> Upcoming: New Slot Confirmed
+    Upcoming --> Cancelled: Patient Cancels (cancelShedule.html)
+    Pending --> Cancelled: Cancelled / No-show
     Completed --> [*]
     Cancelled --> [*]
 ```
@@ -272,38 +301,38 @@ health-rel-project/
 │
 ├── assets/
 │   ├── css/
-│   │   └── style.css            # Central CSS stylesheet (Theme variables, typography, responsive grids)
+│   │   └── style.css            # Central CSS stylesheet (Healthcare theme, variables, grid layouts)
 │   │
-│   ├── images/                  # High-resolution screenshots of portals and workflows
+│   ├── images/                  # High-resolution screenshots of all UI portals & flows
 │   │   ├── portal-landing.png   # Central landing gateway preview
 │   │   ├── doctor-login.png     # Doctor authentication view
 │   │   ├── patient-login.png    # Patient authentication view
-│   │   ├── doctor-dashboard.png # Doctor appointment management dashboard
-│   │   ├── patient-portal.png   # Patient booking and history interface
-│   │   ├── create-schedule.png  # Create schedule / booking form
-│   │   ├── edit-schedule.png    # Edit schedule / reschedule form
-│   │   └── cancel-schedule.png  # Appointment cancellation interface
+│   │   ├── patient-portal.png   # Patient dashboard with CRUD action links
+│   │   ├── create-schedule.png  # Patient: Create schedule / booking form
+│   │   ├── edit-schedule.png    # Patient: Edit schedule / rescheduling form
+│   │   ├── cancel-schedule.png  # Patient: Cancel schedule & confirmation interface
+│   │   └── doctor-dashboard.png # Doctor: Management & monitoring dashboard
 │   │
 │   └── js/
-│       ├── main.js              # Core UI helpers (Mobile drawer, modal controller, toast engine)
-│       ├── doctor.js            # Doctor dashboard controller (Statistics, data filters, tables)
-│       ├── patient.js           # Patient booking workflow and appointment list rendering
-│       ├── createShedule.js     # Department-to-doctor dynamic mapping and schedule creation
-│       ├── EditShedule.js       # Form management for rescheduling existing appointments
-│       └── cancelShedule.js     # Cancellation verification, modal handling, and state removal
+│       ├── main.js              # Shared UI utilities (Mobile drawer, modal controller, toast engine)
+│       ├── patient.js           # Patient dashboard logic and booking modal controller
+│       ├── createShedule.js     # Patient: Dynamic department-to-doctor dropdown & form handler
+│       ├── EditShedule.js       # Patient: Rescheduling form prefill & modification handler
+│       ├── cancelShedule.js     # Patient: Cancellation modal & reason validation
+│       └── doctor.js            # Doctor: Dashboard metrics, calendar date selection & search
 │
 ├── pages/
 │   ├── button.html              # Central launchpad / portal selection (Doctor vs. Patient)
-│   ├── doctorlogin.html         # Secure login view for healthcare providers
-│   ├── patientlogin.html        # Secure login view for patients
-│   ├── Doctor.html              # Main Doctor management dashboard & appointment roster
-│   ├── patient.html             # Patient dashboard with self-service appointment booking
-│   ├── createShedule.html       # Standalone interface for publishing new doctor schedule slots
-│   ├── EditShedule.html         # Standalone interface for modifying existing consultation schedules
-│   └── cancelShedule.html       # Standalone interface for processing appointment cancellations
+│   ├── doctorlogin.html         # Login page for healthcare providers
+│   ├── patientlogin.html        # Login page for patients
+│   ├── patient.html             # Main Patient Dashboard (hub for create, edit, and cancel schedule)
+│   ├── createShedule.html       # Patient page: Create new appointment schedule
+│   ├── EditShedule.html         # Patient page: Modify / reschedule appointment
+│   ├── cancelShedule.html       # Patient page: Cancel appointment
+│   └── Doctor.html              # Main Doctor Dashboard: calendar, patient search & metrics
 │
-├── .gitignore                   # Excludes dependencies, OS artifacts, and nested repositories
-├── LICENSE                      # Project License (MIT)
+├── .gitignore                   # Ignores OS artifacts and nested repository clones
+├── LICENSE                      # MIT License
 └── README.md                    # Project documentation & architectural guide
 ```
 
@@ -311,85 +340,75 @@ health-rel-project/
 
 ## 🧩 Module Breakdown
 
-### Portals & Authentication
-- **`pages/button.html`**: The unified entry point. Provides access to either the Doctor Portal or Patient Portal with medical-themed navigation cards.
-- **`pages/doctorlogin.html` & `pages/patientlogin.html`**: Clean login cards featuring password visibility toggles, credential validation, and direct redirects to respective dashboards.
+### 1. Portal Gateway & Authentication
+- **`pages/button.html`**: Entry landing page with choice of Doctor or Patient access.
+- **`pages/doctorlogin.html`**: Login card for medical practitioners.
+- **`pages/patientlogin.html`**: Login card for hospital patients.
 
-### Doctor Management Portal
-- **`pages/Doctor.html` & `assets/js/doctor.js`**:
-  - Live metric widgets displaying counts of Total, Upcoming, Pending, Completed, and Cancelled appointments.
-  - Filter by date picker or department filter to instantly view matching schedules.
-  - Interactive table actions: View patient details, edit time slots, or cancel visits.
+### 2. Patient Scheduling Module
+All appointment creation, editing, and cancellation actions belong to the **Patient Portal**:
+- **`pages/patient.html` (`patient.js`)**: Main patient hub featuring action buttons (`Create Schedule`, `Edit Schedule`, `Cancel Schedule`) and consultation history.
+- **`pages/createShedule.html` (`createShedule.js`)**: Patient booking form that dynamically loads specialist doctors based on the selected department.
+- **`pages/EditShedule.html` (`EditShedule.js`)**: Patient rescheduling form for updating dates, time slots, or medical reasons.
+- **`pages/cancelShedule.html` (`cancelShedule.js`)**: Patient cancellation workflow with confirmation modal and reason logging.
 
-### Patient Booking Portal
-- **`pages/patient.html` & `assets/js/patient.js`**:
-  - Self-service booking modal allowing patients to choose appointment date, department, and doctor.
-  - Displays upcoming appointments with status indicators and quick cancellation options.
-
-### Schedule Operations (CRUD)
-- **`createShedule.html` & `createShedule.js`**:
-  - Dynamic doctor population based on selected department:
-    - *Cardiology, Neurology, Orthopedics, General Medicine, Dermatology, Pediatrics*.
-  - Inputs for consultation start/end times, room number, and consultation limits.
-- **`EditShedule.html` & `EditShedule.js`**:
-  - Pre-populates selected schedule data for easy time slot and date adjustments.
-- **`cancelShedule.html` & `cancelShedule.js`**:
-  - Dropdown selection of active bookings.
-  - Mandatory cancellation reason collection and multi-step modal confirmation to prevent accidental removals.
+### 3. Doctor Monitoring Module
+- **`pages/Doctor.html` (`doctor.js`)**:
+  - Live metric summary cards (Total Patients, Today's Appointments, Pending, Cancelled, Completed, Upcoming).
+  - Search patient records by **Appointment ID**.
+  - Interactive calendar for reviewing appointments scheduled on specific dates.
+  - Complete schedule history log.
 
 ---
 
 ## 🎨 Design System & Styling
 
-The user interface adheres to standard healthcare digital design practices:
+Clean, modern healthcare UI styling using native CSS custom properties:
 
 | Variable | Hex Value | Purpose |
 | --- | --- | --- |
-| `--primary-color` | `#2563eb` (Blue 600) | Primary brand color, primary action buttons, active navigation |
+| `--primary-color` | `#2563eb` (Blue 600) | Main brand tone, primary buttons, active tabs |
 | `--primary-dark` | `#1d4ed8` (Blue 700) | Button hover states and focused controls |
-| `--primary-light` | `#eff6ff` (Blue 50) | Light card highlights and active table row tints |
-| `--success-color` | `#166534` (Green 800) | Completed appointments and success notifications |
+| `--primary-light` | `#eff6ff` (Blue 50) | Card highlights and row selection tints |
+| `--success-color` | `#166534` (Green 800) | Completed appointments and confirmation toasts |
 | `--warning-color` | `#92400e` (Amber 800) | Pending appointment badges |
-| `--danger-color` | `#991b1b` (Red 800) | Cancelled appointment badges and deletion warnings |
-| `--background-color`| `#f8fafc` (Slate 50) | Main background canvas |
-| `--surface-color` | `#ffffff` (Pure White) | Dashboard containers, modal windows, and cards |
+| `--danger-color` | `#991b1b` (Red 800) | Cancelled status badges and cancellation warnings |
+| `--background-color`| `#f8fafc` (Slate 50) | Main application canvas |
+| `--surface-color` | `#ffffff` (Pure White) | Card containers, modal sheets, and tables |
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- A modern web browser (Google Chrome, Mozilla Firefox, Microsoft Edge, or Safari).
-- (Optional) [VS Code](https://code.visualstudio.com/) with the **Live Server** extension for live-reload development.
+- Any modern web browser (Chrome, Edge, Firefox, Safari). No build tools, package managers, or server runtimes are required.
 
-### Running the Application Locally
+### How to Run Locally
 1. Clone the repository:
    ```bash
    git clone https://github.com/ankitakumari-eng/Appointment_shedule.git
    ```
-2. Navigate to the project directory:
-   ```bash
-   cd Appointment_shedule
-   ```
-3. Open the landing portal:
-   - Double-click [`pages/button.html`](file:///C:/Users/Hp/Desktop/health-rel-project/pages/button.html) in your file manager, or
-   - Right-click `pages/button.html` in VS Code and select **"Open with Live Server"**.
-4. Select **"Login for Doctors"** to test the doctor dashboard, or **"Login for Patients"** to test appointment booking.
+2. Open [`pages/button.html`](file:///C:/Users/Hp/Desktop/health-rel-project/pages/button.html) in your browser:
+   - Double-click the file in File Explorer, or
+   - Right-click in VS Code and choose **"Open with Live Server"**.
+3. Click **"Login for Patients"** to explore creating, editing, and cancelling schedules, or **"Login for Doctors"** to explore the monitoring dashboard.
 
 ---
 
-## 🔮 Future Enhancements
+## 🔮 Future Backend Roadmap
 
-- [ ] **Backend Integration**: Connect frontend controllers to a **FastAPI** backend with PostgreSQL storage.
-- [ ] **JWT Authentication**: Add secure token-based user authentication and role-based route guards.
-- [ ] **Conflict Detection**: Implement automatic slot overlap detection to prevent double bookings.
-- [ ] **Email / SMS Reminders**: Integrate notification services for upcoming consultation alerts.
-- [ ] **Prescription & Medical Records**: Add document upload and consultation summary downloads.
+The current frontend is architected to seamlessly integrate with a full backend stack in upcoming releases:
+
+- [ ] **FastAPI REST API**: Endpoints for appointment CRUD (`POST /appointments`, `PUT /appointments/{id}`, `DELETE /appointments/{id}`, `GET /appointments`).
+- [ ] **PostgreSQL Database**: Relational schema for patients, doctors, departments, and appointment records.
+- [ ] **Authentication & Roles**: JWT-based login with doctor and patient authorization scopes.
+- [ ] **Automated Conflict Detection**: Server-side validation to prevent overlapping bookings.
+- [ ] **SMS & Email Notifications**: Automated reminders for upcoming and rescheduled appointments.
 
 ---
 
 ## 👩‍💻 Author & Credits
 
 - **Developer**: [Ankita Kumari](https://github.com/ankitakumari-eng)
-- **Module**: Scheduling Management (*Appointments, Doctor Availability & Rosters*)
+- **Module**: Scheduling Management (*Appointment Creation, Rescheduling, Cancellation & Doctor Roster*)
 - **License**: Released under the [MIT License](LICENSE).
